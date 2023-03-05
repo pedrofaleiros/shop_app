@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/helpers/custom_route.dart';
 // import 'package:provider/provider.dart';
 import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart.dart';
@@ -62,6 +63,11 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
+            pageTransitionsTheme: PageTransitionsTheme(
+              builders: {
+                TargetPlatform.android : CustomPageTransitionBuilder(),
+              }
+            ),
             fontFamily: 'Lato',
             canvasColor: const Color(0xffffffff),
             colorScheme: ColorScheme.fromSwatch(
@@ -89,7 +95,7 @@ class MyApp extends StatelessWidget {
                   builder: (ctx, snapshot) =>
                       snapshot.connectionState == ConnectionState.waiting
                           ? const Scaffold(
-                              body: Center(child: LinearProgressIndicator()),
+                              body: Center(child: CircularProgressIndicator()),
                             )
                           : AuthScreen(),
                 ),

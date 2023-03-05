@@ -22,38 +22,53 @@ class _OrderItemState extends State<OrderItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text('R\$${widget.order.amount.toStringAsFixed(2)}'),
-            subtitle: Text(
-              DateFormat('dd/MM/yyyy hh:mm').format(
-                widget.order.dateTime,
+    return AnimatedContainer(
+      duration: Duration(
+        milliseconds: 300,
+      ),
+      height: _expanded
+          ? min(
+              widget.order.products.length * 20.0 + 110.0,
+              200,
+            )
+          : 100,
+      child: Card(
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text('R\$${widget.order.amount.toStringAsFixed(2)}'),
+              subtitle: Text(
+                DateFormat('dd/MM/yyyy hh:mm').format(
+                  widget.order.dateTime,
+                ),
+              ),
+              trailing: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
+                },
+                icon: Icon(
+                  _expanded ? Icons.expand_less : Icons.expand_more,
+                ),
               ),
             ),
-            trailing: IconButton(
-              onPressed: () {
-                setState(() {
-                  _expanded = !_expanded;
-                });
-              },
-              icon: Icon(
-                _expanded ? Icons.expand_less : Icons.expand_more,
+            // if (_expanded)
+            AnimatedContainer(
+              duration: Duration(
+                milliseconds: 300,
               ),
-            ),
-          ),
-          if (_expanded)
-            Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 4,
               ),
-              height: min(
-                widget.order.products.length * 20.0 + 20.0,
-                180,
-              ),
+              height: _expanded
+                  ? min(
+                      widget.order.products.length * 20.0 + 10.0,
+                      180,
+                    )
+                  : 0,
               child: ListView(
                 children: widget.order.products
                     .map(
@@ -80,7 +95,8 @@ class _OrderItemState extends State<OrderItem> {
                     .toList(),
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
